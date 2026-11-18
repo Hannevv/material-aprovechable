@@ -1,0 +1,17 @@
+BEGIN
+CREATE EXTENSION
+SET
+1..12
+ok 1 - usuarios
+ok 2 - recicladores
+ok 3 - solicitudes
+ok 4 - solicitud_materiales
+ok 5 - historial_estados
+ok 6 - cinco políticas SELECT
+ok 7 - sin políticas de escritura
+ok 8 - sin UPDATE directo
+ok 9 - sin INSERT historial
+ok 10 - anon sin SELECT
+ok 11 - cancelación con estado esperado
+ok 12 - sin cancelación antigua
+ROLLBACK

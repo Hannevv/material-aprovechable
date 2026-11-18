@@ -1,0 +1,18 @@
+begin;
+create extension if not exists pgtap with schema extensions;
+set search_path = public, extensions;
+select plan(12);
+select has_table('public','usuarios','usuarios');
+select has_table('public','recicladores','recicladores');
+select has_table('public','solicitudes','solicitudes');
+select has_table('public','solicitud_materiales','solicitud_materiales');
+select has_table('public','historial_estados','historial_estados');
+select is((select count(*)::integer from pg_policies where schemaname='public'),5,'cinco políticas SELECT');
+select is((select count(*)::integer from pg_policies where schemaname='public' and cmd <> 'SELECT'),0,'sin políticas de escritura');
+select ok(not has_table_privilege('authenticated','public.solicitudes','UPDATE'),'sin UPDATE directo');
+select ok(not has_table_privilege('authenticated','public.historial_estados','INSERT'),'sin INSERT historial');
+select ok(not has_table_privilege('anon','public.usuarios','SELECT'),'anon sin SELECT');
+select ok(to_regprocedure('public.cancelar_solicitud(uuid,public.estado_solicitud)') is not null,'cancelación con estado esperado');
+select ok(to_regprocedure('public.cancelar_solicitud(uuid)') is null,'sin cancelación antigua');
+select * from finish();
+rollback;

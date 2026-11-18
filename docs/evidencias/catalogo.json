@@ -1,0 +1,174 @@
+{
+  "postgresql": "PostgreSQL 17.12 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+  "indexes": [
+    [
+      "historial_estados",
+      "historial_estados_pkey",
+      "CREATE UNIQUE INDEX historial_estados_pkey ON public.historial_estados USING btree (id)"
+    ],
+    [
+      "historial_estados",
+      "historial_solicitud_fecha",
+      "CREATE INDEX historial_solicitud_fecha ON public.historial_estados USING btree (solicitud_id, fecha_hora)"
+    ],
+    [
+      "recicladores",
+      "recicladores_documento_key",
+      "CREATE UNIQUE INDEX recicladores_documento_key ON public.recicladores USING btree (documento)"
+    ],
+    [
+      "recicladores",
+      "recicladores_estado",
+      "CREATE INDEX recicladores_estado ON public.recicladores USING btree (estado)"
+    ],
+    [
+      "recicladores",
+      "recicladores_pkey",
+      "CREATE UNIQUE INDEX recicladores_pkey ON public.recicladores USING btree (id)"
+    ],
+    [
+      "recicladores",
+      "recicladores_usuario_uid_key",
+      "CREATE UNIQUE INDEX recicladores_usuario_uid_key ON public.recicladores USING btree (usuario_uid)"
+    ],
+    [
+      "solicitud_materiales",
+      "materiales_tipo_solicitud",
+      "CREATE INDEX materiales_tipo_solicitud ON public.solicitud_materiales USING btree (tipo_material, solicitud_id)"
+    ],
+    [
+      "solicitud_materiales",
+      "solicitud_materiales_pkey",
+      "CREATE UNIQUE INDEX solicitud_materiales_pkey ON public.solicitud_materiales USING btree (solicitud_id, tipo_material)"
+    ],
+    [
+      "solicitudes",
+      "solicitudes_ciudadano_fecha",
+      "CREATE INDEX solicitudes_ciudadano_fecha ON public.solicitudes USING btree (ciudadano_uid, fecha_creacion DESC)"
+    ],
+    [
+      "solicitudes",
+      "solicitudes_estado_fecha",
+      "CREATE INDEX solicitudes_estado_fecha ON public.solicitudes USING btree (estado, fecha_creacion DESC)"
+    ],
+    [
+      "solicitudes",
+      "solicitudes_pkey",
+      "CREATE UNIQUE INDEX solicitudes_pkey ON public.solicitudes USING btree (id)"
+    ],
+    [
+      "solicitudes",
+      "solicitudes_reciclador_estado",
+      "CREATE INDEX solicitudes_reciclador_estado ON public.solicitudes USING btree (reciclador_id, estado)"
+    ],
+    [
+      "usuarios",
+      "usuarios_pkey",
+      "CREATE UNIQUE INDEX usuarios_pkey ON public.usuarios USING btree (uid)"
+    ]
+  ],
+  "policies": [
+    [
+      "historial_estados",
+      "historial_admin",
+      "SELECT",
+      "(( SELECT private.rol_actual() AS rol_actual) = 'ADMIN'::rol_usuario)"
+    ],
+    [
+      "recicladores",
+      "recicladores_lectura",
+      "SELECT",
+      "((usuario_uid = ( SELECT auth.uid() AS uid)) OR (( SELECT private.rol_actual() AS rol_actual) = 'ADMIN'::rol_usuario))"
+    ],
+    [
+      "solicitud_materiales",
+      "materiales_lectura",
+      "SELECT",
+      "(EXISTS ( SELECT 1\n   FROM solicitudes s\n  WHERE (s.id = solicitud_materiales.solicitud_id)))"
+    ],
+    [
+      "solicitudes",
+      "solicitudes_lectura",
+      "SELECT",
+      "((( SELECT private.rol_actual() AS rol_actual) = 'ADMIN'::rol_usuario) OR ((( SELECT private.rol_actual() AS rol_actual) = 'CIUDADANO'::rol_usuario) AND (ciudadano_uid = ( SELECT auth.uid() AS uid))) OR ((( SELECT private.rol_actual() AS rol_actual) = 'RECICLADOR'::rol_usuario) AND (estado = 'ASIGNADA'::estado_solicitud) AND (EXISTS ( SELECT 1\n   FROM recicladores r\n  WHERE ((r.id = solicitudes.reciclador_id) AND (r.usuario_uid = ( SELECT auth.uid() AS uid)) AND (r.estado = 'ACTIVO'::estado_reciclador))))))"
+    ],
+    [
+      "usuarios",
+      "usuarios_lectura",
+      "SELECT",
+      "((uid = ( SELECT auth.uid() AS uid)) OR (( SELECT private.rol_actual() AS rol_actual) = 'ADMIN'::rol_usuario))"
+    ]
+  ],
+  "rpc": [
+    [
+      "actualizar_reciclador",
+      "reciclador_id uuid, nombre text, documento text, telefono text",
+      true,
+      [
+        "search_path=\"\""
+      ]
+    ],
+    [
+      "asignar_solicitud",
+      "solicitud_id uuid, reciclador_id uuid",
+      true,
+      [
+        "search_path=\"\""
+      ]
+    ],
+    [
+      "cambiar_estado_reciclador",
+      "reciclador_id uuid, estado estado_reciclador",
+      true,
+      [
+        "search_path=\"\""
+      ]
+    ],
+    [
+      "cancelar_solicitud",
+      "solicitud_id uuid, estado_esperado estado_solicitud",
+      true,
+      [
+        "search_path=\"\""
+      ]
+    ],
+    [
+      "crear_perfil_ciudadano",
+      "nombre text, fecha_aceptacion_politica timestamp with time zone",
+      true,
+      [
+        "search_path=\"\""
+      ]
+    ],
+    [
+      "crear_reciclador_sin_app",
+      "nombre text, documento text, telefono text",
+      true,
+      [
+        "search_path=\"\""
+      ]
+    ],
+    [
+      "crear_solicitud",
+      "materiales tipo_material[], descripcion text, direccion text, latitud double precision, longitud double precision",
+      true,
+      [
+        "search_path=\"\""
+      ]
+    ],
+    [
+      "marcar_recolectada",
+      "solicitud_id uuid",
+      true,
+      [
+        "search_path=\"\""
+      ]
+    ]
+  ],
+  "sha256_migrations": {
+    "20261117000100_modelo.sql": "96b92a2b8d23b4eef13305be6be60344e0529d1b42f9fb224d1961749d9f4281",
+    "20261117000200_seguridad.sql": "a87f403b00955011f86fd8aefc6efa35c5763db9ff6de90fa321c6b213445ffd",
+    "20261117000300_registro.sql": "513b47aa2661f1c10dfba776c38869cb4d28a06dfc837e4260872d5c739bb20e",
+    "20261117000400_transiciones.sql": "b1bb4ec6bdc82d0a66f2e5edd994a2ed6fcaf4f1e67ed62a1fbb0c18d153e431"
+  }
+}
