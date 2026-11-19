@@ -1,0 +1,37 @@
+test_assignment_waits_for_inactivation (__main__.Backend.test_assignment_waits_for_inactivation) ... ok
+test_cancel_owner_and_expected_state (__main__.Backend.test_cancel_owner_and_expected_state) ... ok
+test_concurrent_assignment_cancel (__main__.Backend.test_concurrent_assignment_cancel) ... ok
+test_concurrent_assignment_e08 (__main__.Backend.test_concurrent_assignment_e08) ... ok
+test_concurrent_final_transitions (__main__.Backend.test_concurrent_final_transitions) ... ok
+test_creation_atomic_and_no_initial_history (__main__.Backend.test_creation_atomic_and_no_initial_history) ... ok
+test_deferred_nonempty_materials_constraint (__main__.Backend.test_deferred_nonempty_materials_constraint) ... /workspace/work/test-venv/lib/python3.12/site-packages/psycopg/_connection_base.py:149: ResourceWarning: <psycopg.Connection object at 0x7f51d138fe60> was deleted while still open. Please use 'with' or '.close()' to close the connection properly
+  __warn(
+/workspace/work/test-venv/lib/python3.12/site-packages/psycopg/_connection_base.py:149: ResourceWarning: <psycopg.Connection object at 0x7f51d138cf20> was deleted while still open. Please use 'with' or '.close()' to close the connection properly
+  __warn(
+ok
+test_direct_dml_rejected_on_every_table (__main__.Backend.test_direct_dml_rejected_on_every_table) ... ok
+test_e04_before_send_and_transaction_failure (__main__.Backend.test_e04_before_send_and_transaction_failure) ... ok
+test_e04_lost_response_after_commit_requery (__main__.Backend.test_e04_lost_response_after_commit_requery) ... ok
+test_final_states_no_reopen (__main__.Backend.test_final_states_no_reopen) ... ok
+test_inactivation_waits_for_assignment (__main__.Backend.test_inactivation_waits_for_assignment) ... ok
+test_invalid_creation_cases (__main__.Backend.test_invalid_creation_cases) ... ok
+test_metadata_cannot_escalate_role (__main__.Backend.test_metadata_cannot_escalate_role) ... ok
+test_modality_and_account_constraints (__main__.Backend.test_modality_and_account_constraints) ... ok
+test_no_direct_dml_for_any_client (__main__.Backend.test_no_direct_dml_for_any_client) ... ok
+test_pending_cancel_history_without_recycler (__main__.Backend.test_pending_cancel_history_without_recycler) ... ok
+test_profile_idempotent_and_protected (__main__.Backend.test_profile_idempotent_and_protected) ... ok
+test_profile_requires_acceptance (__main__.Backend.test_profile_requires_acceptance) ... ok
+test_public_rpc_surface_and_search_path (__main__.Backend.test_public_rpc_surface_and_search_path) ... ok
+test_recollection_waits_for_inactivation (__main__.Backend.test_recollection_waits_for_inactivation) ... ok
+test_recycler_management_and_inactivation (__main__.Backend.test_recycler_management_and_inactivation) ... ok
+test_recycler_recollection_and_history (__main__.Backend.test_recycler_recollection_and_history) ... ok
+test_recycler_visible_only_active_assigned (__main__.Backend.test_recycler_visible_only_active_assigned) ... ok
+test_rls_isolation_and_materials (__main__.Backend.test_rls_isolation_and_materials) ... ok
+test_rollback_on_failed_history_for_closures (__main__.Backend.test_rollback_on_failed_history_for_closures) ... ok
+test_rollback_when_history_insert_fails (__main__.Backend.test_rollback_when_history_insert_fails) ... ok
+test_sin_app_and_uniqueness (__main__.Backend.test_sin_app_and_uniqueness) ... ok
+
+----------------------------------------------------------------------
+Ran 28 tests in 5.397s
+
+OK

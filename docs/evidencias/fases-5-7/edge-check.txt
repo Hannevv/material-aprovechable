@@ -1,0 +1,1 @@
+Check file:///workspace/work/material-aprovechable/supabase/functions/crear_reciclador_con_app/index.ts

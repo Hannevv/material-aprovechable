@@ -1,0 +1,22 @@
+00:00 +0: loading test/adapters_test.dart
+00:00 +0: test/adapters_test.dart: mapeo explícito de solicitud y nullable
+00:00 +1: test/adapters_test.dart: mapeo historial distingue ejecutor y asociado
+00:00 +2: test/adapters_test.dart: errores autorización validación red y no confirmado
+00:00 +3: test/adapters_test.dart: cancelación solo precondición sin actor/destino
+00:00 +4: test/adapters_test.dart: creación incierta bloquea reintento ciego y reconsulta
+00:00 +5: test/adapters_test.dart: lecturas y filtro material se delegan al servidor
+00:00 +6: test/adapters_test.dart: fila invisible se reconcilia explícitamente sin polling
+00:00 +7: test/adapters_test.dart: reconexión provoca reconsulta
+00:00 +8: test/adapters_test.dart: cambio de sesión descarta respuesta en vuelo y cierra canal
+00:00 +9: test/adapters_test.dart: logout vacía y termina suscripción
+00:00 +10: loading test/contracts_test.dart
+00:00 +10: test/contracts_test.dart: perfil actual obtiene correo de Auth y rechaza terceros
+00:01 +11: test/contracts_test.dart: login de reciclador inactivo cierra sesión
+00:01 +12: test/contracts_test.dart: registro conserva aceptación en contrato y no envía rol
+00:01 +13: test/contracts_test.dart: alta CON_APP usa Edge y gestión usa RPC
+00:01 +14: test/contracts_test.dart: historial consulta solo solicitud y orden cronológico
+00:01 +15: test/contracts_test.dart: errores Edge distinguen rechazo de resultado incierto
+00:01 +16: loading test/live_test.dart
+00:01 +16: test/live_test.dart: Postgres Changes real, RLS, filtros y reconciliación
+  Skip: Requires LIVE_FIXTURES for isolated real services
+00:01 +16 ~1: All tests passed!

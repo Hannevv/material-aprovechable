@@ -1,14 +1,14 @@
 # Gestión de material aprovechable — Popayán
 
-Iteración de backend: fases 1–4. Flutter móvil/web y core Dart tienen únicamente ubicaciones reservadas; no contienen implementación. Una organización, cinco tablas y ocho RPC de casos de uso. No hay Edge Function, publicación Realtime ni interfaces en esta iteración.
+Checkpoint de fases 1–7: backend, alta CON_APP, Realtime y core Dart/adaptadores implementados. Cinco tablas de aplicación, ocho RPC de casos de uso y una operación SQL interna exclusiva de service_role. Las interfaces Flutter móvil/web siguen pendientes y no están autorizadas en esta entrega. Ver `docs/informe-fases-5-7.md`.
 
 ## Estructura
 
 - `apps/mobile_flutter/`, `apps/admin_flutter_web/`: presentación/bootstrap futuros.
-- `packages/domain/`, `packages/application/`, `packages/infrastructure_supabase/`, `packages/infrastructure_mobile/`: paquetes futuros, sin código Dart.
+- `packages/domain/`, `packages/application/`, `packages/infrastructure_supabase/`, `packages/infrastructure_mobile/`: core, servicios y adaptadores implementados; cada paquete incluye pubspec, lockfile y pruebas.
 - `supabase/config.toml`: configuración local Supabase CLI; Auth sin confirmación de correo y contraseña mínima de 8 caracteres.
 - `supabase/migrations/`: modelo, RLS/permisos, registro/gestión y transiciones.
-- `supabase/functions/`: ubicación reservada; el alta CON_APP se implementará en una fase posterior.
+- `supabase/functions/`: Edge Function `crear_reciclador_con_app`.
 - `supabase/tests/`: pgTAP, integración SQL/concurrencia e integración HTTP con Auth/PostgREST.
 - `config/politica_tratamiento.example.json`: referencia configurable, sin texto jurídico inventado.
 - `docs/`: contrato, trazabilidad, decisiones y resultados reales.
@@ -20,7 +20,7 @@ Requisitos: Docker, Python 3.12 y dependencias fijadas en `supabase/tests/requir
 **Ruta estándar prevista para Supabase CLI, pendiente de ejecutar completamente en un entorno con espacio suficiente:**
 
 ```sh
-supabase start -x realtime,storage-api,imgproxy,mailpit,postgres-meta,studio,edge-runtime,logflare,vector,supavisor
+supabase start -x storage-api,imgproxy,mailpit,postgres-meta,studio,logflare,vector,supavisor
 supabase db reset --local
 python3 -m venv .venv
 .venv/bin/pip install -r supabase/tests/requirements.txt
@@ -33,7 +33,7 @@ Para un CLI ubicado fuera de PATH, definir `SUPABASE_BIN`. Las claves locales se
 
 ## Runtime ligero probado
 
-Este entorno de pruebas ejecuta PostgreSQL 17.12, GoTrue 2.186.0 y PostgREST 14.3 reales. GoTrue instala su propio esquema Auth; no se simula `auth.users`. El bootstrap incorpora roles y el contexto JWT de Supabase. Se prueban las mismas cuatro migraciones. No incluye Kong ni todos los servicios de la distribución Supabase.
+Este entorno de pruebas ejecuta PostgreSQL 17.12, GoTrue 2.186.0 y PostgREST 14.3 reales. GoTrue instala su propio esquema Auth; no se simula `auth.users`. El bootstrap incorpora roles y el contexto JWT de Supabase. El checkpoint original probó cuatro migraciones; fases 5–7 agregan dos migraciones incrementales. No incluye Kong ni todos los servicios de la distribución Supabase.
 
 ```sh
 python3 -m venv .venv
@@ -62,4 +62,6 @@ ADMIN debe aprovisionarse fuera de los clientes: crear su cuenta Auth mediante h
 
 ## Límite de esta entrega
 
-La capacidad visual de mostrar la política, los guards del cliente, la reconciliación automática, el GPS y las suscripciones se implementarán en fases posteriores. Esta entrega exige una fecha de aceptación no nula en la RPC de perfil y conserva la primera aceptación en reintentos; el futuro cliente debe mostrar el contenido suministrado antes de obtenerla. Si falta el contenido, no debe presentar una política ficticia ni habilitar el registro como si estuviera completa.
+La capacidad visual de mostrar la política y los guards de navegación se implementarán en fases posteriores. El core ya proporciona reconciliación, GPS y suscripciones; falta conectarlos a los ciclos de vida de las interfaces. Esta entrega exige una fecha de aceptación no nula en la RPC de perfil y conserva la primera aceptación en reintentos; el futuro cliente debe mostrar el contenido suministrado antes de obtenerla. Si falta el contenido, no debe presentar una política ficticia ni habilitar el registro como si estuviera completa.
+
+Pruebas y configuración adicionales de fases 5–7: `scripts/test-runtime/README.md`. No ejecutar el reset del runtime al reanudar sin necesitarlo.

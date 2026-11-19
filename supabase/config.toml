@@ -34,7 +34,7 @@ enable_signup = true
 enable_confirmations = false
 
 [realtime]
-enabled = false
+enabled = true
 
 [studio]
 enabled = false
@@ -46,7 +46,10 @@ enabled = false
 enabled = false
 
 [edge_runtime]
-enabled = false
+enabled = true
 
 [analytics]
 enabled = false
+
+[functions.crear_reciclador_con_app]
+verify_jwt = true

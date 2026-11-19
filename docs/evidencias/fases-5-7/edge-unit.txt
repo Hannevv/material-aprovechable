@@ -1,0 +1,14 @@
+Check file:///workspace/work/material-aprovechable/supabase/functions/crear_reciclador_con_app/tests/handler_test.ts
+running 10 tests from ./supabase/functions/crear_reciclador_con_app/tests/handler_test.ts
+successful profile ... ok (2ms)
+missing auth ... ok (0ms)
+non admin before mutation ... ok (0ms)
+role modality state cannot be chosen ... ok (0ms)
+Auth failure no compensation ... ok (0ms)
+profile failure compensates exact new uid ... ok (0ms)
+lost response after commit reconciles ... ok (0ms)
+unknown outcome not blindly deleted ... ok (0ms)
+compensation failure explicit ... ok (11ms)
+RPC incierta y lectura vacía no eliminan una cuenta en vuelo ... ok (0ms)
+
+ok | 10 passed | 0 failed (22ms)

@@ -1,0 +1,14 @@
+name: infrastructure_mobile
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: '>=3.10.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  domain:
+    path: ../domain
+  geolocator: ^14.0.2
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

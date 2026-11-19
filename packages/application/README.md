@@ -1,3 +1,5 @@
-# packages/application
+# application
 
-Ubicación reservada en el monorepo. No contiene implementación Dart/Flutter en las fases 1–4.
+AuthService, SolicitudService y RecicladorService; consulta de historial y reconciliación por contratos. Depende únicamente de domain.
+
+Resultados y limitaciones: `../../docs/informe-fases-5-7.md`.

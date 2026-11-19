@@ -1,0 +1,6 @@
+00:00 +0: loading /workspace/work/material-aprovechable/packages/infrastructure_mobile/test/geolocation_test.dart
+00:00 +0: GPS produce coordenadas sin dirección
+00:00 +1: servicio deshabilitado permite alternativa manual
+00:00 +2: permiso denegado solicita y rechaza
+00:00 +3: denegado permanentemente no vuelve a solicitar
+00:00 +4: All tests passed!

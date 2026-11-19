@@ -1,0 +1,10 @@
+test_api_create_and_cancel_expected_state (__main__.AuthHTTP.test_api_create_and_cancel_expected_state) ... ok
+test_api_no_profile_no_escalation_no_dml (__main__.AuthHTTP.test_api_no_profile_no_escalation_no_dml) ... ok
+test_duplicate_email_rejected (__main__.AuthHTTP.test_duplicate_email_rejected) ... ok
+test_password_and_invalid_credentials (__main__.AuthHTTP.test_password_and_invalid_credentials) ... ok
+test_signup_profile_login_logout (__main__.AuthHTTP.test_signup_profile_login_logout) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.795s
+
+OK

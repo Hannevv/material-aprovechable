@@ -356,10 +356,10 @@ class Backend(unittest.TestCase):
     def test_public_rpc_surface_and_search_path(self):
         with db() as c:
             names=c.execute("select p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef order by 1").fetchall()
-            self.assertEqual([n[0] for n in names],sorted(['crear_perfil_ciudadano','crear_solicitud','crear_reciclador_sin_app','actualizar_reciclador','cambiar_estado_reciclador','asignar_solicitud','marcar_recolectada','cancelar_solicitud']))
+            self.assertEqual([n[0] for n in names],sorted(['_crear_perfil_reciclador_con_app','crear_perfil_ciudadano','crear_solicitud','crear_reciclador_sin_app','actualizar_reciclador','cambiar_estado_reciclador','asignar_solicitud','marcar_recolectada','cancelar_solicitud']))
             for name,oid,config in c.execute("select p.proname,p.oid,p.proconfig from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef"):
                 self.assertIn('search_path=""',config)
                 self.assertFalse(c.execute("select has_function_privilege('anon',%s,'execute')",(oid,)).fetchone()[0])
-                self.assertTrue(c.execute("select has_function_privilege('authenticated',%s,'execute')",(oid,)).fetchone()[0])
+                self.assertEqual(c.execute("select has_function_privilege('authenticated',%s,'execute')",(oid,)).fetchone()[0], name != '_crear_perfil_reciclador_con_app')
 
 if __name__=='__main__': unittest.main(verbosity=2)

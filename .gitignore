@@ -11,3 +11,7 @@ supabase/.temp/
 supabase/.branches/
 
 .test-artifacts/
+
+node_modules/
+.flutter-plugins-dependencies
+coverage/
