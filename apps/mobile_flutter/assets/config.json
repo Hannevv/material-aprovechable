@@ -1,5 +1,5 @@
 {
-  "politica": null,
+"politica": "POLITICA DE PRUEBA LOCAL - NO VALIDA PARA PRODUCCION. Este texto existe unicamente para validar el flujo de registro ciudadano durante el desarrollo local. La politica juridica definitiva debera ser suministrada por la organizacion responsable antes de una puesta en produccion.",
   "tiles_url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
   "tiles_atribucion": "© OpenStreetMap contributors",
   "tiles_user_agent": "co.popayan.material_aprovechable"
