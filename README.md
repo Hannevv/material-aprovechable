@@ -13,6 +13,10 @@ Checkpoint técnico de fases 1–9: backend, alta CON_APP, Realtime y core Dart/
 - `config/politica_tratamiento.example.json`: referencia configurable, sin texto jurídico inventado.
 - `docs/`: contrato, trazabilidad, decisiones y resultados reales.
 
+## Ejecutar en Windows
+
+Sigue [la guía desde cero](docs/ejecucion-local-windows.md) para instalar las herramientas, arrancar Supabase local, crear un ADMIN y abrir Flutter Web o Android. Incluye configuración externa sin secretos, comandos PowerShell y pruebas disponibles. El proxy histórico no es necesario.
+
 ## Ejecución reproducible
 
 Requisitos: Docker, Python 3.12 y dependencias fijadas en `supabase/tests/requirements.txt`. Se probó el runtime ligero descrito abajo. El CLI 2.75.0 generó la configuración, pero el arranque de su imagen completa quedó bloqueado por espacio de Docker.

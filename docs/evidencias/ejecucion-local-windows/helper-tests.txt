@@ -1,0 +1,14 @@
+test_definitive_sql_rejection_compensates_exact_account (__main__.LocalAdmin.test_definitive_sql_rejection_compensates_exact_account) ... ok
+test_existing_admin_is_not_changed (__main__.LocalAdmin.test_existing_admin_is_not_changed) ... ok
+test_existing_non_admin_cannot_be_promoted (__main__.LocalAdmin.test_existing_non_admin_cannot_be_promoted) ... ok
+test_new_admin_profile_and_no_secrets_in_output (__main__.LocalAdmin.test_new_admin_profile_and_no_secrets_in_output) ... ok
+test_remote_db_is_rejected_before_connect (__main__.LocalAdmin.test_remote_db_is_rejected_before_connect) ... ok
+test_uncertain_commit_does_not_delete_auth_account (__main__.LocalAdmin.test_uncertain_commit_does_not_delete_auth_account) ... ok
+test_exports_only_public_config_and_respects_port (__main__.LocalConfig.test_exports_only_public_config_and_respects_port) ... ok
+test_loopback_only (__main__.LocalConfig.test_loopback_only) ... ok
+test_remote_config_not_written (__main__.LocalConfig.test_remote_config_not_written) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.007s
+
+OK

@@ -1,0 +1,8 @@
+JSON: ejemplo y assets de ambas apps válidos.
+TOML válido; verify_jwt=true.
+XML debug válido; HTTP limitado a tres hosts locales; sin trust-anchors alternativos.
+Configuración generada ignorada por Git; .gitkeep permitido.
+Sin diferencias en SQL/RPC/RLS/Edge/core, proxy CORS, Flutter Dart, manifests main/profile.
+Sin remoto configurado.
+URLs oficiales Supabase CLI 2.75.0 y Deno 2.5.6 Windows x64: HEAD HTTP 200 (TLS normal).
+No ejecutados: PowerShell/Windows, Android, iOS, GPS, pila completa Supabase CLI. Sin repetición de suites funcionales anteriores.
