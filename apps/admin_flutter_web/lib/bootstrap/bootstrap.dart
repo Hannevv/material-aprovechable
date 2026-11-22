@@ -30,7 +30,11 @@ Future<void> iniciar() async {
   final config =
       jsonDecode(await rootBundle.loadString('assets/config.json'))
           as Map<String, dynamic>;
-  final client = SupabaseClient(url, key);
+  final client = SupabaseClient(
+    url,
+    key,
+    authOptions: const AuthClientOptions(authFlowType: AuthFlowType.implicit),
+  );
   final gateway = SupabaseGateway(client);
   final usuarios = SupabaseUsuarioRepository(gateway);
   final auth = AuthService(SupabaseAuthRepository(gateway, usuarios), usuarios);
