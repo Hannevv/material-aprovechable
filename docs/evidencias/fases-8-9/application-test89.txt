@@ -1,0 +1,6 @@
+00:00 +0: loading test/services_test.dart
+00:00 +0: test/services_test.dart: cancelación propaga precondición observada
+00:00 +1: test/services_test.dart: registro usa Strategy y valida materiales
+00:00 +2: test/services_test.dart: aceptación obligatoria antes de Auth
+00:00 +3: test/services_test.dart: gestión reciclador delega estados y alta
+00:00 +4: All tests passed!

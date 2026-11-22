@@ -21,6 +21,7 @@ class AuthService {
   Future<Usuario> iniciarSesion(String correo, String contrasena) =>
       auth.iniciarSesion(correo, contrasena);
   Future<void> cerrarSesion() => auth.cerrarSesion();
+  Stream<String?> get sesiones => auth.sesiones;
   Future<Usuario> obtenerUsuarioActual() => usuarios.obtenerActual();
 }
 

@@ -65,3 +65,9 @@ El proxy solo escucha 127.0.0.1:54327; enruta Auth/REST/Edge y WebSocket a servi
 Versiones utilizadas: Flutter 3.38.3 / Dart 3.10.1 y Deno 2.5.6. Lockfiles fijan dependencias. En el sandbox se establecieron `CI=true`, `PUB_CACHE`, `XDG_CONFIG_HOME` y `ANALYZER_STATE_LOCATION_OVERRIDE` bajo `/workspace/work`, sin cambiar HOME.
 
 La prueba live se omite explícitamente sin LIVE_FIXTURES. Su resultado aprobado se conserva por separado, no se cuenta una omisión como éxito de integración. No hay dispositivo/emulador: GPS usa plataforma inyectada.
+
+## Cierre de fases 8–9: Chromium
+
+`browser_admin.cjs` usa Playwright 1.62.1 y Chromium instalado (no descarga navegador). El build se sirve con `python3 -m http.server 54328 --bind 127.0.0.1 --directory apps/admin_flutter_web/build/web`. El proxy permite CORS solo desde `http://127.0.0.1:54328`; esa configuración es exclusivamente del runtime de pruebas. Ejecutar desde raíz: `node scripts/test-runtime/browser_admin.cjs`. Requiere Playwright disponible en Node, fixtures y un build configurado con URL/clave pública locales; la clave anon local caduca a las dos horas y debe renovarse al reanudar una sesión larga. No imprimir/copiar tokens a evidencias.
+
+La automatización activa semántica Flutter, enfoca cada campo antes de escribir y comprueba las entradas sin imprimir contraseñas. El informe JSON y screenshot usan solo datos sintéticos. No es una suite E2E exhaustiva ni despliegue de producción.

@@ -1,0 +1,3 @@
+http://127.0.0.1:54328 HTTP 204 Allow-Origin: http://127.0.0.1:54328 Allow-Credentials: None
+http://example.test HTTP 204 Allow-Origin: None Allow-Credentials: None
+2 comprobaciones CORS aprobadas; sin wildcard ni autorización CORS de credenciales.

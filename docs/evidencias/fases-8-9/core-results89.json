@@ -1,0 +1,10 @@
+{
+  "domain test": 0,
+  "domain analyze": 0,
+  "application test": 0,
+  "application analyze": 0,
+  "infrastructure_supabase test": 0,
+  "infrastructure_supabase analyze": 0,
+  "infrastructure_mobile test": 0,
+  "infrastructure_mobile analyze": 0
+}

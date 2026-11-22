@@ -1,0 +1,22 @@
+00:00 +0: loading /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart
+00:00 +0: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: ADMIN entra; filtro inicial PENDIENTE
+00:00 +1: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: rechaza CIUDADANO y RECICLADOR
+00:00 +2: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: filtros combinados y múltiples materiales sin duplicados
+00:00 +3: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: asignación manual CON_APP y SIN_APP activos
+00:00 +4: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: carrera de asignación informa conflicto y reconcilia una vez
+00:00 +5: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: cancelación conserva estado observado y no repite por conflicto
+00:00 +6: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: cierres permitidos y estados finales bloqueados
+00:00 +7: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: altas CON_APP y SIN_APP y duplicado saneado
+00:00 +8: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: editar solo campos permitidos; inactivar y reactivar
+00:00 +9: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: historial conserva ejecutor, rol y reciclador
+00:00 +10: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: actualización Stream y logout limpian todos los datos
+00:00 +11: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/controller_test.dart: reentrada reconsulta sin polling
+00:00 +12: loading /workspace/work/material-aprovechable/apps/admin_flutter_web/test/screens_test.dart
+00:00 +12: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/screens_test.dart: acceso ADMIN y rechazo de ciudadano visibles
+00:02 +13: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/screens_test.dart: lista no duplica materiales y filtra estado/material
+00:02 +14: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/screens_test.dart: asignación manual muestra solo activos y conserva conflicto
+00:02 +15: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/screens_test.dart: cancelación conserva el estado de la confirmación e historial
+00:03 +16: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/screens_test.dart: gestión permite alta SIN_APP, edición y cambio de actividad
+00:03 +17: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/screens_test.dart: mapa usa marcador solo con coordenadas y atribución
+00:03 +18: /workspace/work/material-aprovechable/apps/admin_flutter_web/test/screens_test.dart: responsive estrecho no desborda lista y controles
+00:03 +19: All tests passed!

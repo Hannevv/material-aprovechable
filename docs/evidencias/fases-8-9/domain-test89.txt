@@ -1,0 +1,24 @@
+00:00 +0: loading test/domain_test.dart
+00:00 +0: test/domain_test.dart: PENDIENTE asignar
+00:00 +1: test/domain_test.dart: PENDIENTE recolectar
+00:00 +2: test/domain_test.dart: PENDIENTE cancelar
+00:00 +3: test/domain_test.dart: ASIGNADA asignar
+00:00 +4: test/domain_test.dart: ASIGNADA recolectar
+00:00 +5: test/domain_test.dart: ASIGNADA cancelar
+00:00 +6: test/domain_test.dart: RECOLECTADA asignar
+00:00 +7: test/domain_test.dart: RECOLECTADA recolectar
+00:00 +8: test/domain_test.dart: RECOLECTADA cancelar
+00:00 +9: test/domain_test.dart: CANCELADA asignar
+00:00 +10: test/domain_test.dart: CANCELADA recolectar
+00:00 +11: test/domain_test.dart: CANCELADA cancelar
+00:00 +12: test/domain_test.dart: ubicaciones válidas y límites
+00:00 +13: test/domain_test.dart: ubicaciones inválidas
+00:00 +14: test/domain_test.dart: Strategy manual sin geocodificación
+00:00 +15: test/domain_test.dart: solicitud inmutable y ciclo de vida
+00:00 +16: test/domain_test.dart: materiales requeridos
+00:00 +17: test/domain_test.dart: cuenta y modalidad
+00:00 +18: loading test/invariants_test.dart
+00:00 +18: test/invariants_test.dart: nullability de Usuario según rol
+00:00 +19: test/invariants_test.dart: SIN_APP no puede tener cuenta
+00:00 +20: test/invariants_test.dart: asignación y descripción inválidas se rechazan
+00:00 +21: All tests passed!

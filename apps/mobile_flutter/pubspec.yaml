@@ -1,0 +1,28 @@
+name: material_mobile
+description: Gestión de material aprovechable de Popayán
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: '>=3.10.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  domain:
+    path: ../../packages/domain
+  application:
+    path: ../../packages/application
+  infrastructure_supabase:
+    path: ../../packages/infrastructure_supabase
+  infrastructure_mobile:
+    path: ../../packages/infrastructure_mobile
+  supabase: ^2.10.0
+  cupertino_icons: ^1.0.8
+  flutter_map: ^8.2.2
+  latlong2: ^0.9.1
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/config.json

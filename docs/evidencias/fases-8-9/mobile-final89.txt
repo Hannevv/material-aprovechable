@@ -1,0 +1,30 @@
+00:00 +0: loading /workspace/work/material-aprovechable/apps/mobile_flutter/test/live_controllers_test.dart
+00:00 +0: /workspace/work/material-aprovechable/apps/mobile_flutter/test/live_controllers_test.dart: controladores móvil/admin contra Auth RPC RLS Edge y Realtime reales
+00:06 +1: /workspace/work/material-aprovechable/apps/mobile_flutter/test/live_controllers_test.dart: respuesta perdida después de commit real exige reconciliación y revisión
+00:07 +2: loading /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart
+00:07 +2: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: respuesta de validación de sesión tardía no notifica controlador destruido
+00:07 +3: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: registro exige política, aceptación y contraseña mínima
+00:07 +4: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: sin política no registra
+00:07 +5: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: login y logout limpian lista y suscripción
+00:07 +6: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: rechaza ADMIN en móvil
+00:07 +7: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: creación GPS uno y varios materiales confirma identificador
+00:07 +8: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: dirección manual no invoca GPS; descripción 0/250/>250
+00:07 +9: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: lista vacía y actualización mediante Stream
+00:07 +10: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: cancelación usa PENDIENTE y reconcilia conflicto sin repetir
+00:07 +11: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: reciclador consulta asignadas y marca recolectada
+00:07 +12: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: reciclador inactivo no puede entrar; inactivación cierra al reentrar
+00:07 +13: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: cambio de usuario descarta datos y eventos posteriores
+00:07 +14: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: foreground/reentrada solicita consulta autorizada
+00:07 +15: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: creación ambigua consulta y requiere revisión explícita antes de reintentar
+00:07 +16: /workspace/work/material-aprovechable/apps/mobile_flutter/test/controller_test.dart: consulta fallida no habilita reintento ambiguo
+00:07 +17: loading /workspace/work/material-aprovechable/apps/mobile_flutter/test/screens_test.dart
+00:08 +17: /workspace/work/material-aprovechable/apps/mobile_flutter/test/screens_test.dart: registro muestra política y aceptación antes de crear cuenta
+00:10 +18: /workspace/work/material-aprovechable/apps/mobile_flutter/test/screens_test.dart: login/logout limpia pantalla y credenciales
+00:10 +19: /workspace/work/material-aprovechable/apps/mobile_flutter/test/screens_test.dart: formulario manual, selección múltiple y confirmación con id
+00:10 +20: /workspace/work/material-aprovechable/apps/mobile_flutter/test/screens_test.dart: cancelación pide confirmación y muestra conflicto
+00:10 +21: /workspace/work/material-aprovechable/apps/mobile_flutter/test/screens_test.dart: reciclador ve dirección manual sin mapa y marca recolectada
+00:10 +22: /workspace/work/material-aprovechable/apps/mobile_flutter/test/screens_test.dart: mapa con coordenadas muestra marcador y atribución
+00:10 +23: /workspace/work/material-aprovechable/apps/mobile_flutter/test/screens_test.dart: foreground y reentrada invocan reconciliación
+00:11 +24: /workspace/work/material-aprovechable/apps/mobile_flutter/test/screens_test.dart: cambio de sesión cierra diálogo y elimina datos anteriores
+00:11 +25: /workspace/work/material-aprovechable/apps/mobile_flutter/test/screens_test.dart: ambigüedad mantiene envío deshabilitado hasta revisar
+00:11 +26: All tests passed!

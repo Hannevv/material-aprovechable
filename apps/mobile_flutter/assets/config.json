@@ -1,0 +1,6 @@
+{
+  "politica": null,
+  "tiles_url": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+  "tiles_atribucion": "© OpenStreetMap contributors",
+  "tiles_user_agent": "co.popayan.material_aprovechable"
+}

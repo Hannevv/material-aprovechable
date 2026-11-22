@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "arranque, carga inicial y formulario de login",
+    "autenticación CIUDADANO rechazada por el panel",
+    "autenticación ADMIN y acceso al panel",
+    "navegación Solicitudes → Recicladores → Solicitudes",
+    "logout y limpieza del formulario",
+    "sin errores de runtime ni errores de consola"
+  ],
+  "passed": 6,
+  "runtimeErrors": 0,
+  "consoleErrors": 0
+}

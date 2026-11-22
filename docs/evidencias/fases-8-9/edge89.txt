@@ -1,0 +1,12 @@
+test_admin_creates_fixed_profiles_no_secrets (__main__.Edge.test_admin_creates_fixed_profiles_no_secrets) ... ok
+test_duplicate_document_compensates_new_auth (__main__.Edge.test_duplicate_document_compensates_new_auth) ... ok
+test_duplicate_email_does_not_delete_original (__main__.Edge.test_duplicate_email_does_not_delete_original) ... ok
+test_forbidden_role_modality_state (__main__.Edge.test_forbidden_role_modality_state) ... ok
+test_internal_rpc_not_callable_by_admin_client (__main__.Edge.test_internal_rpc_not_callable_by_admin_client) ... ok
+test_missing_and_non_admin (__main__.Edge.test_missing_and_non_admin) ... ok
+test_partial_profile_failure_rolls_back_and_compensates (__main__.Edge.test_partial_profile_failure_rolls_back_and_compensates) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 2.538s
+
+OK

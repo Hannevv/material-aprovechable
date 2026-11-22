@@ -1,10 +1,10 @@
 # Gestión de material aprovechable — Popayán
 
-Checkpoint de fases 1–7: backend, alta CON_APP, Realtime y core Dart/adaptadores implementados. Cinco tablas de aplicación, ocho RPC de casos de uso y una operación SQL interna exclusiva de service_role. Las interfaces Flutter móvil/web siguen pendientes y no están autorizadas en esta entrega. Ver `docs/informe-fases-5-7.md`.
+Checkpoint técnico de fases 1–9: backend, alta CON_APP, Realtime y core Dart/adaptadores implementados. Cinco tablas de aplicación, ocho RPC de casos de uso y una operación SQL interna exclusiva de service_role. Las interfaces móvil/web están implementadas en fases 8–9; la aceptación final sigue pendiente. Ver `docs/informe-fases-8-9.md` y el informe histórico `docs/informe-fases-5-7.md`.
 
 ## Estructura
 
-- `apps/mobile_flutter/`, `apps/admin_flutter_web/`: presentación/bootstrap futuros.
+- `apps/mobile_flutter/`, `apps/admin_flutter_web/`: presentación y bootstrap propios implementados.
 - `packages/domain/`, `packages/application/`, `packages/infrastructure_supabase/`, `packages/infrastructure_mobile/`: core, servicios y adaptadores implementados; cada paquete incluye pubspec, lockfile y pruebas.
 - `supabase/config.toml`: configuración local Supabase CLI; Auth sin confirmación de correo y contraseña mínima de 8 caracteres.
 - `supabase/migrations/`: modelo, RLS/permisos, registro/gestión y transiciones.
@@ -62,6 +62,8 @@ ADMIN debe aprovisionarse fuera de los clientes: crear su cuenta Auth mediante h
 
 ## Límite de esta entrega
 
-La capacidad visual de mostrar la política y los guards de navegación se implementarán en fases posteriores. El core ya proporciona reconciliación, GPS y suscripciones; falta conectarlos a los ciclos de vida de las interfaces. Esta entrega exige una fecha de aceptación no nula en la RPC de perfil y conserva la primera aceptación en reintentos; el futuro cliente debe mostrar el contenido suministrado antes de obtenerla. Si falta el contenido, no debe presentar una política ficticia ni habilitar el registro como si estuviera completa.
+Las interfaces muestran la política configurable y aplican guards por rol; conectan reconciliación y suscripciones a foreground/reentrada. El registro exige aceptación y conserva su fecha/hora mediante la RPC. Mientras la organización no suministre la política, el registro permanece deshabilitado. GPS real, builds nativos y aceptación integral siguen pendientes según el informe de fases 8–9.
 
 Pruebas y configuración adicionales de fases 5–7: `scripts/test-runtime/README.md`. No ejecutar el reset del runtime al reanudar sin necesitarlo.
+
+Cierre de presentación: `docs/informe-fases-8-9.md`, `docs/trazabilidad-fases-8-9.md` y README de cada app. No implica aceptación final ni validación de dispositivos.

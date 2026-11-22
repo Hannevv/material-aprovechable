@@ -141,9 +141,14 @@ class SupabaseSolicitudRepository implements SolicitudRepository {
   @override
   Future<List<Solicitud>>
   reconciliarCreacionNoConfirmada() => proteger(() async {
-    final rows = await _listar(filtros: {'ciudadano_uid': db.uid ?? ''});
-    // No liberar un reintento ambiguo: sin clave idempotente no existe prueba general de ausencia.
-    // La vista puede mostrar la lista autorizada; resolver una operación ambigua exige revisión.
+    final uid = db.uid;
+    if (uid == null) throw const Fallo(TipoFallo.autorizacion, 'Sin sesión');
+    final rows = await _listar(filtros: {'ciudadano_uid': uid});
+    if (uid != db.uid)
+      throw const Fallo(TipoFallo.autorizacion, 'La sesión cambió');
+    // La UI exige revisión explícita tras esta consulta completada. No se reintenta aquí.
+    // Esto no ofrece idempotencia durable entre reinicios.
+    _creacionNoConfirmadaUid = null;
     return rows;
   });
   @override

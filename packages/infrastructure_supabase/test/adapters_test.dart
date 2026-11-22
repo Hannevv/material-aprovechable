@@ -6,6 +6,49 @@ import 'package:test/test.dart';
 import 'fake_gateway.dart';
 
 void main() {
+  test('reintento solo tras consulta autorizada completada', () async {
+    final g = FakeGateway()..failure = TimeoutException('lost');
+    final r = SupabaseSolicitudRepository(g);
+    await expectLater(
+      r.crear([TipoMaterial.PAPEL], null, Ubicacion(direccion: 'C')),
+      throwsA(isA<Fallo>()),
+    );
+    g.reader = () async => throw TimeoutException('offline');
+    await expectLater(
+      r.reconciliarCreacionNoConfirmada(),
+      throwsA(isA<Fallo>()),
+    );
+    await expectLater(
+      r.crear([TipoMaterial.PAPEL], null, Ubicacion(direccion: 'C')),
+      throwsA(isA<Fallo>()),
+    );
+    expect(g.rpcs, 1);
+    g.reader = null;
+    g.failure = null;
+    g.result = solicitudRow();
+    await r.reconciliarCreacionNoConfirmada();
+    await r.crear([TipoMaterial.PAPEL], null, Ubicacion(direccion: 'C'));
+    expect(g.rpcs, 2);
+    await r.dispose();
+    await g.dispose();
+  });
+  test(
+    'reconciliación en vuelo no devuelve datos tras cambiar identidad',
+    () async {
+      final g = FakeGateway();
+      final pending = Completer<List<Map<String, dynamic>>>();
+      g.reader = () => pending.future;
+      final r = SupabaseSolicitudRepository(g);
+      final result = r.reconciliarCreacionNoConfirmada();
+      final check = expectLater(result, throwsA(isA<Fallo>()));
+      g.user = 'otro';
+      pending.complete([solicitudRow()]);
+      await check;
+      await r.dispose();
+      await g.dispose();
+    },
+  );
+
   test('mapeo explícito de solicitud y nullable', () {
     final s = solicitudDe(solicitudRow());
     expect(s.materiales, [TipoMaterial.PAPEL]);
