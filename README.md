@@ -1,73 +1,517 @@
-# Gestión de material aprovechable — Popayán
+# Plataforma de Gestión de Material Aprovechable
 
-Checkpoint técnico de fases 1–9: backend, alta CON_APP, Realtime y core Dart/adaptadores implementados. Cinco tablas de aplicación, ocho RPC de casos de uso y una operación SQL interna exclusiva de service_role. Las interfaces móvil/web están implementadas en fases 8–9; la aceptación final sigue pendiente. Ver `docs/informe-fases-8-9.md` y el informe histórico `docs/informe-fases-5-7.md`.
+Proyecto de grado orientado al desarrollo de una plataforma digital para la gestión de solicitudes de recolección de material aprovechable en la ciudad de Popayán.
 
-## Estructura
+La solución busca facilitar la coordinación entre ciudadanos, una organización recolectora y recicladores de oficio mediante una aplicación móvil y un panel administrativo web.
 
-- `apps/mobile_flutter/`, `apps/admin_flutter_web/`: presentación y bootstrap propios implementados.
-- `packages/domain/`, `packages/application/`, `packages/infrastructure_supabase/`, `packages/infrastructure_mobile/`: core, servicios y adaptadores implementados; cada paquete incluye pubspec, lockfile y pruebas.
-- `supabase/config.toml`: configuración local Supabase CLI; Auth sin confirmación de correo y contraseña mínima de 8 caracteres.
-- `supabase/migrations/`: modelo, RLS/permisos, registro/gestión y transiciones.
-- `supabase/functions/`: Edge Function `crear_reciclador_con_app`.
-- `supabase/tests/`: pgTAP, integración SQL/concurrencia e integración HTTP con Auth/PostgREST.
-- `config/politica_tratamiento.example.json`: referencia configurable, sin texto jurídico inventado.
-- `docs/`: contrato, trazabilidad, decisiones y resultados reales.
+## Descripción general
 
-## Ejecutar en Windows
+La plataforma permite que un ciudadano registre una solicitud de recolección indicando los materiales disponibles y su ubicación. Posteriormente, un usuario administrador puede consultar las solicitudes, asignarlas manualmente a un reciclador activo y realizar seguimiento a su estado.
 
-Sigue [la guía desde cero](docs/ejecucion-local-windows.md) para instalar las herramientas, arrancar Supabase local, crear un ADMIN y abrir Flutter Web o Android. Incluye configuración externa sin secretos, comandos PowerShell y pruebas disponibles. El proxy histórico no es necesario.
+Los recicladores que utilizan la aplicación móvil pueden consultar las recolecciones que les han sido asignadas y marcar una solicitud como recolectada cuando finalizan el proceso.
 
-## Ejecución reproducible
+También se contempla la gestión de recicladores que no cuentan con acceso a la aplicación, denominados `SIN_APP`. En estos casos, las operaciones correspondientes son realizadas desde el panel administrativo por un usuario autorizado.
 
-Requisitos: Docker, Python 3.12 y dependencias fijadas en `supabase/tests/requirements.txt`. Se probó el runtime ligero descrito abajo. El CLI 2.75.0 generó la configuración, pero el arranque de su imagen completa quedó bloqueado por espacio de Docker.
+## Actores del sistema
 
-**Ruta estándar prevista para Supabase CLI, pendiente de ejecutar completamente en un entorno con espacio suficiente:**
+### Ciudadano
 
-```sh
-supabase start -x storage-api,imgproxy,mailpit,postgres-meta,studio,logflare,vector,supavisor
-supabase db reset --local
-python3 -m venv .venv
-.venv/bin/pip install -r supabase/tests/requirements.txt
-PYTHON_BIN=.venv/bin/python scripts/test-backend.sh
+El ciudadano utiliza la aplicación móvil para:
+
+- Registrarse e iniciar sesión.
+- Crear solicitudes de recolección.
+- Seleccionar uno o varios tipos de material.
+- Registrar su ubicación mediante GPS o dirección manual.
+- Consultar el estado de sus solicitudes.
+- Cancelar una solicitud mientras se encuentre en estado permitido.
+
+### Reciclador con aplicación
+
+El reciclador con aplicación puede:
+
+- Iniciar sesión.
+- Consultar las solicitudes que le han sido asignadas.
+- Visualizar la ubicación de una recolección.
+- Marcar una solicitud como recolectada.
+
+### Administrador
+
+El administrador utiliza el panel web para:
+
+- Consultar solicitudes.
+- Consultar recicladores.
+- Registrar recicladores con aplicación y sin aplicación.
+- Activar o inactivar recicladores.
+- Asignar solicitudes manualmente.
+- Actualizar estados permitidos.
+- Consultar el historial de cambios de las solicitudes.
+
+## Estados de una solicitud
+
+Las solicitudes utilizan una máquina de estados con los siguientes valores:
+
+- `Pendiente`
+- `Asignada`
+- `Recolectada`
+- `Cancelada`
+
+Las principales transiciones permitidas son:
+
+```text
+Pendiente → Asignada
+Pendiente → Cancelada
+Asignada → Recolectada
+Asignada → Cancelada
 ```
 
-`supabase start` también aplica las migraciones al crear la base. `db reset --local` permite comprobar su reproducción desde cero. La suite Python borra los datos de las cinco tablas públicas: ejecutar **únicamente en una instancia local desechable y dedicada a este proyecto**. Requiere localhost:54322 y habilitación explícita de reset; el script la proporciona. Las pruebas HTTP crean cuentas locales sintéticas, eliminables mediante el siguiente reset. Ningún secreto de un entorno remoto es necesario.
+Los estados `Recolectada` y `Cancelada` son estados finales.
 
-Para un CLI ubicado fuera de PATH, definir `SUPABASE_BIN`. Las claves locales se leen en memoria con `supabase status -o json` y no se imprimen ni se guardan en el repositorio.
+Las transiciones son controladas por el backend para evitar modificaciones no autorizadas desde el cliente.
 
-## Runtime ligero probado
+## Tipos de material
 
-Este entorno de pruebas ejecuta PostgreSQL 17.12, GoTrue 2.186.0 y PostgREST 14.3 reales. GoTrue instala su propio esquema Auth; no se simula `auth.users`. El bootstrap incorpora roles y el contexto JWT de Supabase. El checkpoint original probó cuatro migraciones; fases 5–7 agregan dos migraciones incrementales. No incluye Kong ni todos los servicios de la distribución Supabase.
+El MVP contempla los siguientes tipos de material aprovechable:
 
-```sh
-python3 -m venv .venv
-.venv/bin/pip install -r supabase/tests/requirements.txt
-PYTHON_BIN=.venv/bin/python scripts/test-runtime/run.sh --reset-local
+- Papel
+- Cartón
+- Plástico
+- Vidrio
+- Metal
+
+Una solicitud puede contener uno o varios tipos de material.
+
+## Arquitectura
+
+El proyecto utiliza una arquitectura basada en Clean Architecture con cuatro capas principales:
+
+```text
+Presentación
+    ↓
+Aplicación
+    ↓
+Dominio
+    ↑
+Contratos
+    ↑
+Infraestructura
+    ↓
+Supabase
 ```
 
-El comando anterior **recrea únicamente el entorno desechable `material-backend-tests`**, aplica las migraciones desde cero y ejecuta las suites. Necesita Docker, curl y acceso a la versión fijada de pgTAP. Fue ejecutado satisfactoriamente antes de la interrupción. No se repitió la reconstrucción al reanudar.
+### Presentación
 
-Para reanudar los contenedores existentes y repetir únicamente las pruebas HTTP, conservando los datos:
+Contiene las interfaces gráficas de la aplicación móvil y del panel administrativo.
 
-```sh
-docker compose -f scripts/test-runtime/compose.yml start
-LIGHTWEIGHT_TEST_RUNTIME=1 .venv/bin/python supabase/tests/auth_http_test.py
+Su responsabilidad principal es:
+
+- mostrar información;
+- recibir acciones del usuario;
+- representar estados de carga, éxito y error;
+- delegar las operaciones a la capa de aplicación.
+
+### Aplicación
+
+Coordina los casos de uso del sistema.
+
+Incluye servicios relacionados con:
+
+- autenticación;
+- solicitudes;
+- recicladores;
+- sincronización de información mediante Streams.
+
+Esta capa no depende directamente de implementaciones de Supabase.
+
+### Dominio
+
+Contiene las reglas principales del negocio.
+
+Aquí se encuentran:
+
+- entidades;
+- Value Objects;
+- estados de las solicitudes;
+- reglas de transición;
+- contratos Repository;
+- patrones de dominio como State y Strategy.
+
+El dominio busca mantenerse independiente de frameworks y tecnologías externas.
+
+### Infraestructura
+
+Implementa los contratos definidos por el dominio.
+
+Esta capa contiene los adaptadores necesarios para interactuar con:
+
+- Supabase Auth;
+- PostgreSQL;
+- RPC;
+- Realtime / Postgres Changes;
+- Edge Functions.
+
+## Composition Root
+
+La aplicación móvil y el panel web cuentan con su propio Composition Root.
+
+Estos puntos de entrada se encargan de:
+
+- crear las dependencias;
+- inicializar Supabase;
+- conectar interfaces con implementaciones;
+- inyectar repositorios y servicios.
+
+Gracias a esto, la capa de aplicación no necesita conocer directamente las implementaciones de infraestructura.
+
+## Tecnologías utilizadas
+
+### Frontend
+
+- Flutter
+- Flutter Web
+- Dart
+
+### Backend
+
+- Supabase
+- PostgreSQL
+- Supabase Auth
+- Row Level Security
+- RPC
+- Edge Functions
+- Postgres Changes
+
+### Ubicación y mapas
+
+- geolocator
+- flutter_map
+- OpenStreetMap o proveedor de teselas compatible
+
+### Herramientas
+
+- Git
+- GitHub
+- Android Studio
+- Visual Studio Code
+- Netlify para el despliegue del panel administrativo
+
+## ¿Por qué Dart?
+
+Dart es utilizado porque es el lenguaje principal del framework Flutter.
+
+En este proyecto permite utilizar una misma tecnología tanto para la aplicación móvil como para el panel web.
+
+Esto permite compartir código entre ambos clientes, principalmente:
+
+- entidades;
+- reglas de negocio;
+- contratos;
+- servicios de aplicación;
+- repositorios;
+- Streams;
+- validaciones.
+
+Dart también ofrece características importantes para este proyecto:
+
+### Tipado estático
+
+Permite detectar errores de tipos durante el desarrollo y modelar de forma clara elementos como estados, entidades y parámetros.
+
+### Null Safety
+
+Permite diferenciar explícitamente entre valores obligatorios y opcionales, reduciendo errores relacionados con valores nulos.
+
+### Programación asíncrona
+
+Dart incluye soporte nativo para:
+
+```dart
+Future
+async
+await
+Stream
 ```
 
-Resultados finales: **28 pruebas SQL/backend, 5 HTTP y 12 aserciones pgTAP aprobadas**. Evidencias en `docs/evidencias/`; detalle en `docs/informe-fases-1-4.md`. Las credenciales del Compose son valores públicos exclusivos de este entorno local desechable; no sirven para producción.
+Esto resulta especialmente útil para operaciones como:
+
+- autenticación;
+- consultas a Supabase;
+- llamadas RPC;
+- geolocalización;
+- suscripciones a cambios.
+
+### Streams
+
+Los Streams permiten implementar un comportamiento basado en Observer.
+
+Cuando Supabase informa un cambio relevante, los componentes suscritos pueden actualizar la información automáticamente sin realizar consultas constantes.
+
+## Patrones de diseño
+
+### Repository
+
+Se utiliza para desacoplar la lógica del negocio del mecanismo concreto de persistencia.
+
+El dominio define contratos y la infraestructura los implementa utilizando Supabase.
+
+Esto permite que las capas internas no dependan directamente de la tecnología de base de datos.
+
+### State
+
+Se utiliza para representar y controlar el comportamiento asociado a los diferentes estados de una solicitud.
+
+Ejemplo:
+
+```text
+Pendiente
+Asignada
+Recolectada
+Cancelada
+```
+
+Cada estado determina las operaciones que pueden realizarse.
+
+### Strategy
+
+Se utiliza para abstraer comportamientos que pueden tener distintas implementaciones.
+
+Uno de los casos está relacionado con la obtención de ubicación, permitiendo separar la lógica del dominio de una implementación concreta como `geolocator`.
+
+### Observer
+
+Se implementa mediante Streams y suscripciones.
+
+El flujo general es:
+
+```text
+Cambio en Supabase
+        ↓
+Postgres Changes
+        ↓
+Adaptador de infraestructura
+        ↓
+Stream
+        ↓
+Aplicación / Presentación
+        ↓
+Actualización de la interfaz
+```
+
+## Base de datos
+
+Las tablas principales del sistema son:
+
+### usuarios
+
+Contiene la información asociada a los usuarios autenticados y su rol dentro del sistema.
+
+### recicladores
+
+Contiene la información de los recicladores.
+
+Un reciclador puede ser:
+
+- `CON_APP`
+- `SIN_APP`
+
+Los recicladores `SIN_APP` no necesitan una cuenta en Supabase Auth.
+
+### solicitudes
+
+Contiene las solicitudes de recolección registradas por los ciudadanos.
+
+Incluye información como:
+
+- ciudadano;
+- reciclador asignado;
+- descripción;
+- ubicación;
+- estado;
+- fechas relevantes.
+
+### solicitud_materiales
+
+Relaciona una solicitud con uno o varios tipos de material.
+
+### historial_estados
+
+Registra los cambios de estado realizados sobre una solicitud.
+
+Permite conservar trazabilidad sobre:
+
+- estado anterior;
+- estado nuevo;
+- usuario que realizó la operación;
+- rol;
+- reciclador relacionado;
+- fecha de cambio.
 
 ## Seguridad
 
-El rol efectivo procede de `public.usuarios`; `auth.uid()` identifica al ejecutor. `user_metadata` nunca autoriza. Los clientes tienen SELECT bajo RLS y EXECUTE sobre ocho RPC; no INSERT/UPDATE/DELETE sobre las cinco tablas. Los helpers están en `private`, fuera de los esquemas API. Todas las funciones privilegiadas fijan `search_path = ''`.
+La seguridad del sistema se controla principalmente en el backend.
 
-La política permite al reciclador leer su perfil incluso estando inactivo para informar su estado, pero sus solicitudes/materiales solo son visibles mientras esté ACTIVO y la solicitud siga ASIGNADA a él. No puede consultar historial ni solicitudes finales.
+El cliente no es considerado una fuente confiable para determinar:
 
-ADMIN debe aprovisionarse fuera de los clientes: crear su cuenta Auth mediante herramientas administrativas seguras y después insertar su registro `usuarios` con rol ADMIN y nombre. No hay autorregistro ADMIN. No se incluyen contraseñas ADMIN ni semillas de producción.
+- identidad del usuario;
+- rol;
+- reciclador asociado;
+- permisos.
 
-## Límite de esta entrega
+Supabase obtiene la identidad autenticada mediante:
 
-Las interfaces muestran la política configurable y aplican guards por rol; conectan reconciliación y suscripciones a foreground/reentrada. El registro exige aceptación y conserva su fecha/hora mediante la RPC. Mientras la organización no suministre la política, el registro permanece deshabilitado. GPS real, builds nativos y aceptación integral siguen pendientes según el informe de fases 8–9.
+```sql
+auth.uid()
+```
 
-Pruebas y configuración adicionales de fases 5–7: `scripts/test-runtime/README.md`. No ejecutar el reset del runtime al reanudar sin necesitarlo.
+A partir de esta identidad se consulta el rol almacenado en el sistema.
 
-Cierre de presentación: `docs/informe-fases-8-9.md`, `docs/trazabilidad-fases-8-9.md` y README de cada app. No implica aceptación final ni validación de dispositivos.
+También se utiliza Row Level Security para limitar el acceso a los datos dependiendo del usuario autenticado.
+
+## RPC y operaciones críticas
+
+Las operaciones principales de negocio se realizan mediante funciones RPC.
+
+Entre ellas se encuentran:
+
+```text
+crear_perfil_ciudadano
+crear_solicitud
+asignar_solicitud
+marcar_recolectada
+cancelar_solicitud
+```
+
+Esto permite centralizar las validaciones y reglas críticas en el servidor.
+
+Por ejemplo, una asignación debe comprobar:
+
+- que el usuario sea ADMIN;
+- que la solicitud esté Pendiente;
+- que el reciclador esté activo;
+- que la transición sea válida.
+
+Las operaciones críticas no dependen de un `UPDATE` directo enviado desde Flutter.
+
+## Consistencia y concurrencia
+
+Las actualizaciones importantes se ejecutan de forma controlada en el backend.
+
+Cuando una solicitud cambia de estado, el cambio y su historial deben mantenerse consistentes.
+
+El sistema también contempla situaciones de concurrencia, por ejemplo cuando dos usuarios intentan modificar la misma solicitud.
+
+Para operaciones como cancelación se utiliza el estado esperado de la solicitud con el objetivo de detectar modificaciones concurrentes.
+
+## Recicladores CON_APP y SIN_APP
+
+### CON_APP
+
+Un reciclador con aplicación cuenta con:
+
+- usuario en Supabase Auth;
+- registro en `usuarios`;
+- registro en `recicladores`.
+
+Puede iniciar sesión y operar desde la aplicación móvil.
+
+### SIN_APP
+
+Un reciclador sin aplicación cuenta únicamente con su registro operativo en `recicladores`.
+
+No necesita credenciales de autenticación.
+
+Las operaciones relacionadas con este reciclador son realizadas por el administrador desde el panel web.
+
+## Edge Function
+
+El registro de un reciclador con aplicación requiere operaciones administrativas que no deben ejecutarse directamente desde el cliente.
+
+Para esto se utiliza una Edge Function encargada de coordinar la creación del usuario y del perfil correspondiente.
+
+Entre sus responsabilidades se encuentran:
+
+- validar la autorización;
+- crear el usuario en Auth;
+- registrar la información correspondiente;
+- manejar errores parciales;
+- utilizar credenciales privilegiadas únicamente en el entorno servidor.
+
+## Flujo general de una solicitud
+
+```text
+CIUDADANO
+    ↓
+Aplicación móvil
+    ↓
+Presentación
+    ↓
+Servicio de aplicación
+    ↓
+Repository
+    ↓
+Infraestructura Supabase
+    ↓
+RPC crear_solicitud
+    ↓
+PostgreSQL
+```
+
+Posteriormente:
+
+```text
+ADMIN
+   ↓
+Panel Web
+   ↓
+RPC asignar_solicitud
+   ↓
+Solicitud: Pendiente → Asignada
+   ↓
+Historial
+   ↓
+Postgres Changes
+   ↓
+RECICLADOR recibe actualización
+```
+
+Finalmente:
+
+```text
+RECICLADOR
+   ↓
+Aplicación móvil
+   ↓
+RPC marcar_recolectada
+   ↓
+Solicitud: Asignada → Recolectada
+   ↓
+Historial
+```
+
+## Alcance del MVP
+
+El proyecto está enfocado en la gestión básica de solicitudes de recolección.
+
+No incluye dentro del alcance actual:
+
+- optimización automática de rutas;
+- asignación automática de recicladores;
+- inteligencia artificial;
+- pagos;
+- recompensas;
+- chat;
+- geocodificación;
+- agenda de recolecciones;
+- reasignación automática;
+- múltiples organizaciones;
+- reportes estadísticos avanzados.
+
+## Objetivo general
+
+Desarrollar un prototipo funcional de una plataforma digital para gestionar solicitudes de recolección de material aprovechable, facilitando la coordinación entre ciudadanos, una organización recolectora y recicladores de oficio en la ciudad de Popayán.
+
+## Autores
+
+- Johan Eduardo Vivas Narváez
+- Juan Sebastián Narváez Delgado
+
+Proyecto académico de Ingeniería Informática.
